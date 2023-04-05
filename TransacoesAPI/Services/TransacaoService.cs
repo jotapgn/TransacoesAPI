@@ -86,25 +86,25 @@ namespace TransacoesAPI.Services
                 throw new Exception(ex.Message);
             }
         }
-        public SaldoResult GetSaldo(string email, int tipoDeTransacao)
+        public SaldoResult GetSaldo(string email, int tipoDeMovimentacao)
         {
             try
             {
-                if (ValidateTipoDeTransacao(tipoDeTransacao))
+                if (ValidateMovimentacao(tipoDeMovimentacao))
                 {
                     var usuario = GetUsuario(email);
 
                     var saldo = new SaldoResult();
                    ;
 
-                    if (tipoDeTransacao == TipoDeTransacao.Gastos.GetHashCode())
+                    if (tipoDeMovimentacao == TipoDaMovimentacao.Saida.GetHashCode())
                     {
                         saldo.tipo_da_movimentacao = TipoDaMovimentacao.Saida.GetHashCode();
                         saldo.valor = _transacaoRepository.GetSaldo(usuario.Id, TipoDaMovimentacao.Saida.GetHashCode());
                         return saldo;
                     }
 
-                    if (tipoDeTransacao == TipoDeTransacao.Receitas.GetHashCode())
+                    if (tipoDeMovimentacao == TipoDaMovimentacao.Entrada.GetHashCode())
                     {
                         saldo.tipo_da_movimentacao = TipoDaMovimentacao.Entrada.GetHashCode();
                         saldo.valor = _transacaoRepository.GetSaldo(usuario.Id, TipoDaMovimentacao.Entrada.GetHashCode());

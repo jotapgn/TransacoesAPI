@@ -34,6 +34,7 @@ namespace TransacoesAPI.Repository
         {
             return _context.Transacoes
                              .Where(x => x.UsuarioId == usuarioId && x.TipoDaMovimentacao == tipoDaMovimentacao)
+                             .ToList()
                              .Sum(y => y.Valor);
         }
     }
