@@ -23,6 +23,10 @@ namespace TransacoesAPI.Controllers
         /// <summary>
         ///Cadastrar Transação
         /// </summary>
+        /// <remarks>
+        /// Tipos de movimentações: 1:Entrada, 2:Saída.
+        /// 
+        /// </remarks>
         [HttpPost("transacao")]
         [Authorize(Roles ="User")]
         public ActionResult CreateTransacao(TransacaoRequest transacaoRequest)
@@ -45,6 +49,10 @@ namespace TransacoesAPI.Controllers
         /// <summary>
         ///Alterar Transação
         /// </summary>
+        /// <remarks>
+        /// Tipos de movimentações: 1:Entrada, 2:Saída.
+        /// 
+        /// </remarks>
         [HttpPut("transacao")]
         [Authorize(Roles = "User")]
         public ActionResult UpdateTransacao(TransacaoUpdateRequest transacaoRequest)
@@ -67,7 +75,6 @@ namespace TransacoesAPI.Controllers
         /// <summary>
         ///Excluir Transação
         /// </summary>
-        /// /// <param name="transacao_id">Tipos de transações: 0:Todas, 1:Receitas, 2:Gastos.</param>
         [HttpDelete("transacao")]
         [Authorize(Roles = "User")]
         public ActionResult DeleteTransacao(int transacao_id)
@@ -90,6 +97,7 @@ namespace TransacoesAPI.Controllers
         /// <summary>
         ///Retornar Transações
         /// </summary>
+        /// <param name="tipo_de_transacao">Tipos de transações: 0:Todas, 1:Receitas, 2:Gastos.</param>
         [HttpGet("transacoes")]
         [Authorize(Roles = "User")]
         public ActionResult GetTransacoes(int tipo_de_transacao)
@@ -112,6 +120,7 @@ namespace TransacoesAPI.Controllers
         /// <summary>
         ///Retornar saldo por tipo da movimentação
         /// </summary>
+        /// <param name="tipo_da_movimentacao">Tipos de movimentações: 1:Entrada, 2:Saída.</param>
         [HttpGet("saldo")]
         [Authorize(Roles = "User")]
         public ActionResult GetSaldo(int tipo_da_movimentacao)
