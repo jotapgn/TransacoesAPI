@@ -8,7 +8,7 @@ Web API para registro de transações monetárias de entrada e saída.
 * Entity Framework
 * SQLite
 * Swagger
-* JWT Web Token
+* JWT (Json Web Token)
 
 ## :pencil:Instalação
 Para utilizar esta API, você precisará ter o .NET 6 ou superior instalado na sua máquina.
