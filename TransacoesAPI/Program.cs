@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using System.Reflection;
 using System.Text;
 using TransacoesAPI.Data;
 using TransacoesAPI.Models;
@@ -20,7 +21,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddCors();
 
-var key = Encoding.ASCII.GetBytes(Settings.Secret);
+var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!);
 
 builder.Services.AddAuthentication(x =>
 {
@@ -46,6 +47,21 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c => { c.EnableAnnotations(); });
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "TransacoesAPI",
+        Description = "API para registro de transações"
+    });
+});
+builder.Services.AddSwaggerGen(c =>
+{
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
+    $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+});
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme

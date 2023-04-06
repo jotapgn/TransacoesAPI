@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Annotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -26,6 +27,12 @@ namespace TransacoesAPI.Controllers
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Registrar Usuário
+        /// </summary>
+        /// <remarks>
+        /// Registrar o usuário na API.
+        /// </remarks>
         [HttpPost("register")]
         public ActionResult Register(UsuarioRequest usuarioRequest)
         {
@@ -42,8 +49,14 @@ namespace TransacoesAPI.Controllers
             }
 
         }
+        /// <summary>
+        /// Login do Usuário
+        /// </summary>
+        /// <remarks>
+        /// Login do usuário na API para retorno do token
+        /// </remarks>      
         [HttpPost("login")]
-        public async Task<ActionResult<dynamic>> Login(LoginRequest usuarioRequest)
+        public async Task<ActionResult<dynamic>>Login(LoginRequest usuarioRequest)
         {
             try
             {
@@ -51,7 +64,7 @@ namespace TransacoesAPI.Controllers
                 {
                     var usuario = _usuarioService.GetUsuarioByEmail(usuarioRequest.email);
 
-                    var token = TokenService.CreateToken(usuario);
+                    var token = TokenService.CreateToken(usuario, _configuration);
                     return Ok(token);
                 }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using TransacoesAPI.Models.Request;
 using TransacoesAPI.Models.Requests;
@@ -15,12 +16,13 @@ namespace TransacoesAPI.Controllers
     {
         public readonly ITransacaoService _transacaoService;
 
-        private readonly IConfiguration _configuration;
-        public TransacaoController(ITransacaoService transacaoService, IConfiguration configuration)
+        public TransacaoController(ITransacaoService transacaoService)
         {
             _transacaoService = transacaoService;
-            _configuration = configuration;
         }
+        /// <summary>
+        ///Cadastrar Transação
+        /// </summary>
         [HttpPost("transacao")]
         [Authorize(Roles ="User")]
         public ActionResult CreateTransacao(TransacaoRequest transacaoRequest)
@@ -40,6 +42,9 @@ namespace TransacoesAPI.Controllers
             }
 
         }
+        /// <summary>
+        ///Alterar Transação
+        /// </summary>
         [HttpPut("transacao")]
         [Authorize(Roles = "User")]
         public ActionResult UpdateTransacao(TransacaoUpdateRequest transacaoRequest)
@@ -59,9 +64,13 @@ namespace TransacoesAPI.Controllers
             }
 
         }
+        /// <summary>
+        ///Excluir Transação
+        /// </summary>
+        /// /// <param name="transacao_id">Tipos de transações: 0:Todas, 1:Receitas, 2:Gastos.</param>
         [HttpDelete("transacao")]
         [Authorize(Roles = "User")]
-        public ActionResult UpdateTransacao(int transacao_id)
+        public ActionResult DeleteTransacao(int transacao_id)
         {
             try
             {
@@ -78,15 +87,18 @@ namespace TransacoesAPI.Controllers
             }
 
         }
+        /// <summary>
+        ///Retornar Transações
+        /// </summary>
         [HttpGet("transacoes")]
         [Authorize(Roles = "User")]
-        public ActionResult GetTransacoes(int tipo_da_movimentacao)
+        public ActionResult GetTransacoes(int tipo_de_transacao)
         {
             try
             {
                 string usuarioEmail = User.FindFirst(ClaimTypes.Email)?.Value;
 
-                var transacoes = _transacaoService.GetTransacoesList(usuarioEmail, tipo_da_movimentacao);
+                var transacoes = _transacaoService.GetTransacoesList(usuarioEmail, tipo_de_transacao);
 
                 return Ok(transacoes);
 
@@ -97,6 +109,9 @@ namespace TransacoesAPI.Controllers
             }
 
         }
+        /// <summary>
+        ///Retornar saldo por tipo da movimentação
+        /// </summary>
         [HttpGet("saldo")]
         [Authorize(Roles = "User")]
         public ActionResult GetSaldo(int tipo_da_movimentacao)

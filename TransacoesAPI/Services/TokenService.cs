@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,7 +13,7 @@ namespace TransacoesAPI.Services
 {
     public static class TokenService
     {
-        public static string CreateToken(Usuario usuario)
+        public static string CreateToken(Usuario usuario, IConfiguration configuration)
         {
             List<Claim> claims = new List<Claim>
             {
@@ -22,7 +23,7 @@ namespace TransacoesAPI.Services
             };
 
             var key = new
-                    SymmetricSecurityKey(Encoding.ASCII.GetBytes(Settings.Secret));
+                    SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("AppSettings:Token").Value!));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var token = new JwtSecurityToken

@@ -2,8 +2,8 @@
 {
     public enum TipoDeTransacao
     {
-        Todas = 1, 
-        Gastos = 2,
-        Receitas = 3
+        Todas = 0, 
+        Receitas = 1,
+        Gastos = 2
     }
 }
